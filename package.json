@@ -1,11 +1,11 @@
 {
-  "name": "v4",
-  "description": "Personal Website V4",
+  "name": "v2",
+  "description": "Personal Website V2",
   "version": "1.0.0",
-  "author": "Brittany Chiang <brittany.chiang@gmail.com>",
+  "author": "Abdullah <abdullah628360@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bchiang7/v4"
+    "url": "https://github.com/Abdullah628"
   },
   "keywords": [
     "gatsby"
@@ -19,6 +19,7 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
+    "deploy": "getsby build && gh-pages -d public -b main",
     "prepare": "husky install",
     "lint-staged": "lint-staged"
   },

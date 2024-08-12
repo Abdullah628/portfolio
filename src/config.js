@@ -6,14 +6,14 @@ module.exports = {
       name: 'GitHub',
       url: 'https://github.com/Abdullah628',
     },
-    
+
     {
       name: 'Linkedin',
       url: 'https://www.linkedin.com/in/abdul-al-islam-rafi-3158a120b/',
     },
     {
-      name: 'Codepen',
-      url: 'https://codepen.io/bchiang7',
+      name: 'LeetCode',
+      url: 'https://leetcode.com/u/abdullah628360',
     },
   ],
 

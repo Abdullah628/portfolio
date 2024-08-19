@@ -7,7 +7,10 @@ location: 'Dhaka, Bangladesh'
 # url: 'https://web.northeastern.edu/scout/'
 ---
 
-- B.Sc IN COMPUTER SCIENCE & ENGINEERING (CSE) (2021-2025) <br> -CGPA 3.47 OUT OF 4.00
-- Web Development from BASIS SEIP Project
-- Professional English Communication Skill
-- Computer Office Application
+- Web Development From [Programming Hero](https://www.programming-hero.com/) (Running). <br>**Technology:** HTML, CSS, Tailwind, JavaScript, React,Node JS, Express JS, MongoDB
+
+- Web Design From [BASIS SEIP](https://basis.org.bd/content/seip) Project With Grade A+.<br>**Technology:** HTML, CSS, Bootstrap, Figma JavaScript, Jquery.
+
+- Computer Office Application From [BTEB](https://bteb.gov.bd/) With Grade A+.<br>**Tools:** Microsoft Word, Excel, Powerpoint etc.
+
+- Professional English Communication Skill From [WSDA NewZelend](https://wsda.ac.nz/) with Grade A.

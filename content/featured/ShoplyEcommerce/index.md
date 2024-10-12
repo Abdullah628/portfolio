@@ -1,5 +1,5 @@
 ---
-date: '1'
+date: '3'
 title: 'Shoply Ecommerce'
 cover: './shoply.webp'
 github: 'https://github.com/Abdullah628/shoply'

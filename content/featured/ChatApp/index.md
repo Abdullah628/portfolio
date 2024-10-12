@@ -13,4 +13,4 @@ tech:
 
 <!-- A minimal, dark blue theme for VS Code, Sublime Text, Atom, iTerm, and more. Available on [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=brittanychiang.halcyon-vscode), [Package Control](https://packagecontrol.io/packages/Halcyon%20Theme), [Atom Package Manager](https://atom.io/themes/halcyon-syntax), and [npm](https://www.npmjs.com/package/hyper-halcyon-theme). -->
 
-Create real-time chat applications with MERN stack, leveraging MongoDB, Express.js, React, and Node.js for seamless communication.
+This project uses the MERN stack with Socket.io for real-time messaging and online user status tracking, alongside Zustand for global state management. It includes JWT-based authentication and authorization and implements comprehensive error handling on both the server and client sides, with a responsive UI styled using TailwindCSS and Daisy UI.

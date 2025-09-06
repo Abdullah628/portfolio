@@ -7,7 +7,7 @@ location: 'Dhaka, Bangladesh'
 # url: 'https://web.northeastern.edu/scout/'
 ---
 
-- Web Development From [Programming Hero](https://www.programming-hero.com/) (Running). <br>**Technology:** HTML, CSS, Tailwind, JavaScript, React,Node JS, Express JS, MongoDB
+- Web Development From [Programming Hero](https://www.programming-hero.com/). <br>**Technology:** HTML, CSS, Tailwind, JavaScript, React,Node JS, Express JS, MongoDB
 
 - Web Design From [BASIS SEIP](https://basis.org.bd/content/seip) Project With Grade A+.<br>**Technology:** HTML, CSS, Bootstrap, Figma JavaScript, Jquery.
 

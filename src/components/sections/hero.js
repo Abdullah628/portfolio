@@ -66,19 +66,26 @@ const Hero = () => {
     <>
       <p>
         I’m a software engineer specializing in building (and occasionally designing) exceptional
-        web aplications. Currently, I’m focused on building accessible, human-centered products.
-        {/* at{' '}
-        <a href="https://upstatement.com/" target="_blank" rel="noreferrer">
-          Upstatement
-        </a> */}
-        .
+        web aplications. Currently, I’m focused on building accessible, human-centered products at{' '}
+        <a href="https://octopi-digital.com/" target="_blank" rel="noreferrer">
+          Octopi Digital LLC.
+        </a>
       </p>
     </>
   );
+  // const five = (
+  //   <a
+  //     className="email-link"
+  //     href="https://ecommerce-store-76tn.onrender.com/"
+  //     target="_blank"
+  //     rel="noreferrer">
+  //     Check out my Recent Work!
+  //   </a>
+  // );
   const five = (
     <a
       className="email-link"
-      href="https://ecommerce-store-76tn.onrender.com/"
+      href="https://speakai-tutor.vercel.app/"
       target="_blank"
       rel="noreferrer">
       Check out my Recent Work!

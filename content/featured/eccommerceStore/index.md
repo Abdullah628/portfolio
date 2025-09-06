@@ -1,5 +1,5 @@
 ---
-date: '1'
+date: '2'
 title: 'MERN Ecommerce Store'
 cover: './ecommerce_store.png'
 github: 'https://github.com/Abdullah628/ecommerce_store'

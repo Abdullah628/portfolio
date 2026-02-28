@@ -207,6 +207,7 @@ const StyledStatsSection = styled.section`
       width: 40px;
       height: 40px;
       filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.4));
+      margin-bottom: 6px;
 
       @media (max-width: 768px) {
         width: 32px;

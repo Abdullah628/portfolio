@@ -3,6 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled, { keyframes } from 'styled-components';
 import { navDelay, loaderDelay } from '@utils';
 import { usePrefersReducedMotion } from '@hooks';
+import emoImage from '../../images/emo.webp';
 
 const float1 = keyframes`
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
@@ -434,16 +435,7 @@ const Hero = () => {
         </StyledHeroContent>
 
         <StyledHeroImageWrap>
-          <img
-            src="/emo.webp"
-            alt="Cute emo robot illustration"
-            loading="eager"
-            onError={e => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src =
-                'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?auto=format&fit=crop&w=900&q=80';
-            }}
-          />
+          <img src={emoImage} alt="Cute emo robot illustration" loading="eager" />
         </StyledHeroImageWrap>
       </StyledHeroLayout>
     </StyledHeroSection>

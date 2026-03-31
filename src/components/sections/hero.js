@@ -76,10 +76,7 @@ const StyledHeroSection = styled.section`
 
 const StyledFloatingLogos = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
@@ -105,6 +102,12 @@ const StyledLogoIcon = styled.div`
     filter: drop-shadow(0 0 6px ${props => props.glow || 'rgba(100, 255, 218, 0.3)'});
   }
 
+  img {
+    width: ${props => props.size || 48}px;
+    height: ${props => props.size || 48}px;
+    filter: drop-shadow(0 0 6px ${props => props.glow || 'rgba(100, 255, 218, 0.3)'});
+  }
+
   &.float-1 {
     animation: ${float1} ${props => props.duration || 8}s ease-in-out infinite;
   }
@@ -124,23 +127,95 @@ const StyledHeroContent = styled.div`
   z-index: 1;
 `;
 
+const StyledHeroLayout = styled.div`
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 620px) minmax(280px, 1fr);
+  align-items: center;
+  gap: clamp(24px, 5vw, 72px);
+
+  @media (max-width: 1080px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+`;
+
+const StyledHeroImageWrap = styled.div`
+  position: relative;
+  justify-self: end;
+  width: min(420px, 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: none;
+  background: transparent;
+
+  img {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  @media (max-width: 1080px) {
+    justify-self: start;
+    width: min(340px, 85vw);
+  }
+`;
+
 // Tech logo SVG paths
 const techLogos = [
   {
-    name: 'JavaScript',
-    top: '8%',
-    left: '75%',
+    name: 'PostgreSQL',
+    top: '20%',
+    left: '62%',
     size: 52,
-    color: '#f7df1e',
-    glow: 'rgba(247, 223, 30, 0.3)',
+    color: '#336791',
+    glow: 'rgba(51, 103, 145, 0.3)',
     animClass: 'float-1',
     duration: 9,
-    path: 'M0 0h24v24H0V0zm2.667 20.667l2.507-1.516c.483.853 1.028 1.534 2.057 1.534.993 0 1.62-.389 1.62-1.903V11.5h3.077v7.315c0 3.136-1.84 4.564-4.525 4.564-2.424 0-3.826-1.254-4.54-2.765l-.196.053zm10.766-.392l2.507-1.454c.664 1.085 1.529 1.884 3.058 1.884 1.284 0 2.107-.642 2.107-1.53 0-1.062-.843-1.44-2.264-2.058l-.776-.333c-2.243-.955-3.733-2.153-3.733-4.684C14.332 9.903 16.317 8 19.18 8c1.962 0 3.374.683 4.39 2.472l-2.404 1.544c-.529-.953-1.1-1.328-1.987-1.328-.904 0-1.478.573-1.478 1.328 0 .93.574 1.307 1.9 1.884l.776.334c2.641 1.128 4.131 2.282 4.131 4.874 0 2.793-2.195 4.323-5.143 4.323-2.885 0-4.745-1.375-5.654-3.178l.722-.644z',
+    imgSrc: 'https://www.vectorlogo.zone/logos/postgresql/postgresql-icon.svg',
+  },
+  {
+    name: 'Ubuntu',
+    top: '32%',
+    left: '58%',
+    size: 44,
+    color: '#E95420',
+    glow: 'rgba(233, 84, 32, 0.3)',
+    animClass: 'float-3',
+    duration: 10,
+    imgSrc: 'https://www.vectorlogo.zone/logos/ubuntu/ubuntu-icon.svg',
+  },
+  {
+    name: 'Linux',
+    top: '42%',
+    left: '56%',
+    size: 42,
+    color: '#FBC02D',
+    glow: 'rgba(251, 192, 45, 0.3)',
+    animClass: 'float-1',
+    duration: 11,
+    imgSrc: 'https://www.vectorlogo.zone/logos/linux/linux-icon.svg',
+  },
+  {
+    name: 'ChatGPT',
+    top: '22%',
+    left: '72%',
+    size: 46,
+    color: '#10A37F',
+    glow: 'rgba(16, 163, 127, 0.3)',
+    animClass: 'float-2',
+    duration: 10,
+    imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg',
   },
   {
     name: 'Docker',
-    top: '20%',
-    right: '8%',
+    top: '26%',
+    right: '4%',
     size: 56,
     color: '#2496ED',
     glow: 'rgba(36, 150, 237, 0.3)',
@@ -150,8 +225,8 @@ const techLogos = [
   },
   {
     name: 'GitHub',
-    top: '65%',
-    right: '12%',
+    top: '80%',
+    right: '6%',
     size: 50,
     color: '#e6f1ff',
     glow: 'rgba(230, 241, 255, 0.2)',
@@ -161,8 +236,8 @@ const techLogos = [
   },
   {
     name: 'Python',
-    top: '75%',
-    left: '70%',
+    top: '84%',
+    left: '64%',
     size: 44,
     color: '#3776AB',
     glow: 'rgba(55, 118, 171, 0.3)',
@@ -171,20 +246,9 @@ const techLogos = [
     path: 'M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.68H3.23l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z',
   },
   {
-    name: 'React',
-    top: '15%',
-    left: '5%',
-    size: 48,
-    color: '#61DAFB',
-    glow: 'rgba(97, 218, 251, 0.3)',
-    animClass: 'float-3',
-    duration: 8,
-    path: 'M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.31 0-.592.06-.842.174-.935.467-1.12 1.753-.554 3.612.17.558.387 1.14.646 1.737C4.69 8.17 3.834 9.56 3.3 10.84c-.264.632-.46 1.24-.6 1.808-.546 1.86-.327 3.143.608 3.612.25.125.534.186.842.186 1.346 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.31 0 .592-.06.842-.175.935-.467 1.12-1.753.554-3.612a15.65 15.65 0 0 0-.646-1.736c1.662-1.31 2.518-2.7 3.052-3.98.264-.632.46-1.24.6-1.808.546-1.86.327-3.143-.608-3.612a1.566 1.566 0 0 0-.842-.174zM6.08 16.66c-.086 0-.165-.008-.232-.03-.362-.18-.504-.812-.25-1.68.113-.387.28-.8.492-1.228 1.05.72 2.24 1.32 3.52 1.756a17.1 17.1 0 0 1-2.066 1.072c-.596.28-1.1.39-1.464.11zm7.076-8.26c-.455 1.065-1.115 2.21-1.952 3.352-.84 1.143-1.72 2.138-2.596 2.934a13.87 13.87 0 0 1-2.596-2.934C5.17 10.61 4.51 9.465 4.056 8.4c.455-1.065 1.115-2.21 1.952-3.352.84-1.143 1.72-2.138 2.596-2.934a13.87 13.87 0 0 1 2.596 2.934c.84 1.143 1.5 2.287 1.956 3.352zm1.196.656c.232.473.425.93.56 1.368.254.868.112 1.5-.25 1.68-.067.03-.146.037-.232.03-.364.28-.868-.17-1.464-.45a17.1 17.1 0 0 1-2.066-1.072c1.28-.437 2.47-1.037 3.52-1.756zM12 3.078c.916.87 1.83 1.926 2.704 3.124a18.15 18.15 0 0 1-2.704 1.03A18.15 18.15 0 0 1 9.296 6.2C10.17 5.004 11.084 3.948 12 3.078zm-5.196 2c.596.28 1.1.39 1.464.45.086 0 .165-.008.232-.03.362-.18.504-.812.25-1.68a10.037 10.037 0 0 0-.492-1.228c-1.05.72-2.24 1.32-3.52 1.756.65.297 1.35.553 2.066.732zm5.196 15.844c-.916-.87-1.83-1.926-2.704-3.124.87.37 1.78.65 2.704.79.925-.14 1.834-.42 2.704-.79-.874 1.198-1.788 2.254-2.704 3.124z',
-  },
-  {
     name: 'VS Code',
-    top: '40%',
-    right: '5%',
+    top: '92%',
+    right: '22%',
     size: 46,
     color: '#007ACC',
     glow: 'rgba(0, 122, 204, 0.3)',
@@ -205,7 +269,7 @@ const techLogos = [
   },
   {
     name: 'C++',
-    top: '50%',
+    top: '30%',
     left: '82%',
     size: 42,
     color: '#00599C',
@@ -216,8 +280,8 @@ const techLogos = [
   },
   {
     name: 'TypeScript',
-    top: '30%',
-    left: '88%',
+    top: '44%',
+    left: '94%',
     size: 40,
     color: '#3178C6',
     glow: 'rgba(49, 120, 198, 0.3)',
@@ -226,20 +290,8 @@ const techLogos = [
     path: 'M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.473.597.615.954.142.356.214.77.214 1.24 0 .748-.149 1.36-.444 1.837-.296.476-.689.847-1.182 1.114-.492.268-1.047.453-1.665.557a8.929 8.929 0 0 1-1.899.146c-.699 0-1.352-.066-1.961-.198a5.95 5.95 0 0 1-1.572-.555v-2.699c.244.186.5.35.769.492.269.142.535.261.799.357.264.097.515.169.753.218.237.049.41.073.598.073.357 0 .636-.04.838-.12.2-.08.349-.19.443-.33a.874.874 0 0 0 .164-.493.792.792 0 0 0-.189-.525c-.126-.17-.318-.335-.576-.497-.258-.162-.568-.326-.93-.491-.514-.225-.95-.465-1.31-.72a4.21 4.21 0 0 1-.886-.812 2.956 2.956 0 0 1-.498-.991c-.102-.37-.152-.795-.152-1.279 0-.69.141-1.277.423-1.76.282-.482.663-.877 1.142-1.184a5.304 5.304 0 0 1 1.625-.713 7.327 7.327 0 0 1 1.874-.242zm-6.363.45h2.893v1.86H12.59v8.19H10.4v-8.19H7.476V10.2h4.649z',
   },
   {
-    name: 'AI/ML',
-    top: '5%',
-    left: '45%',
-    size: 50,
-    color: '#64ffda',
-    glow: 'rgba(100, 255, 218, 0.3)',
-    animClass: 'float-1',
-    duration: 7,
-    viewBox: '0 0 640 512',
-    path: 'M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256a40 40 0 1 0-80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80zM48 224H64V416H48c-26.5 0-48-21.5-48-48V272c0-26.5 21.5-48 48-48zm544 0c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H576V224h16z',
-  },
-  {
     name: 'Git',
-    top: '55%',
+    top: '46%',
     left: '3%',
     size: 42,
     color: '#F05032',
@@ -250,7 +302,7 @@ const techLogos = [
   },
   {
     name: 'MongoDB',
-    top: '88%',
+    top: '92%',
     left: '55%',
     size: 38,
     color: '#47A248',
@@ -258,6 +310,17 @@ const techLogos = [
     animClass: 'float-3',
     duration: 10,
     path: 'M17.193 9.555c-1.264-5.58-4.252-7.414-4.573-8.115-.28-.394-.53-.954-.735-1.44-.036.495-.055.685-.523 1.184-.723.566-4.438 3.682-4.74 10.02-.282 5.912 4.27 9.435 4.888 9.884l.07.05A73.49 73.49 0 0111.91 24h.481c.114-1.032.284-2.056.51-3.07.417-.296.604-.463.85-.693a11.342 11.342 0 003.639-8.464c.01-.814-.103-1.662-.197-2.218zm-5.336 8.195s0-8.291.275-8.29c.213 0 .49 10.695.49 10.695-.381-.045-.765-1.76-.765-2.405z',
+  },
+  {
+    name: 'React.js',
+    top: '20%',
+    left: '48%',
+    size: 40,
+    color: '#61DAFB',
+    glow: 'rgba(97, 218, 251, 0.3)',
+    animClass: 'float-2',
+    duration: 11,
+    imgSrc: 'https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg',
   },
 ];
 
@@ -278,9 +341,20 @@ const FloatingLogos = () => (
           animationDelay: `${i * 0.5}s`,
         }}
         title={logo.name}>
-        <svg viewBox={logo.viewBox || '0 0 24 24'} xmlns="http://www.w3.org/2000/svg">
-          <path d={logo.path} />
-        </svg>
+        {logo.imgSrc ? (
+          <img
+            src={logo.imgSrc}
+            alt=""
+            loading="lazy"
+            onError={e => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        ) : (
+          <svg viewBox={logo.viewBox || '0 0 24 24'} xmlns="http://www.w3.org/2000/svg">
+            <path d={logo.path} />
+          </svg>
+        )}
       </StyledLogoIcon>
     ))}
   </StyledFloatingLogos>
@@ -301,12 +375,16 @@ const Hero = () => {
 
   const one = <h1>Hi, my name is</h1>;
   const two = <h2 className="big-heading">Abdullah.</h2>;
-  const three = <h3 className="big-heading">I build things for the web.</h3>;
+  const three = (
+    <h3 className="big-heading">I design scalable, fault-tolerant software systems.</h3>
+  );
   const four = (
     <>
       <p>
-        I’m a software engineer specializing in building (and occasionally designing) exceptional
-        web aplications. Currently, I’m focused on building accessible, human-centered products at{' '}
+        I’m a software engineer focused on distributed systems, event-driven architecture, and
+        production reliability. I build with strong API contracts, performance optimization,
+        observability, and secure-by-design engineering, while selectively integrating AI where it
+        improves system capability and developer velocity at{' '}
         <a href="https://octopi-digital.com/" target="_blank" rel="noreferrer">
           Octopi Digital LLC.
         </a>
@@ -328,7 +406,7 @@ const Hero = () => {
       href="https://speakai-tutor.vercel.app/"
       target="_blank"
       rel="noreferrer">
-      Check out my Recent Work!
+      Explore My Latest AI Web Product
     </a>
   );
 
@@ -337,24 +415,30 @@ const Hero = () => {
   return (
     <StyledHeroSection>
       <FloatingLogos />
-      <StyledHeroContent>
-        {prefersReducedMotion ? (
-          <>
-            {items.map((item, i) => (
-              <div key={i}>{item}</div>
-            ))}
-          </>
-        ) : (
-          <TransitionGroup component={null}>
-            {isMounted &&
-              items.map((item, i) => (
-                <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
-                  <div style={{ transitionDelay: `${i + 1}00ms` }}>{item}</div>
-                </CSSTransition>
+      <StyledHeroLayout>
+        <StyledHeroContent>
+          {prefersReducedMotion ? (
+            <>
+              {items.map((item, i) => (
+                <div key={i}>{item}</div>
               ))}
-          </TransitionGroup>
-        )}
-      </StyledHeroContent>
+            </>
+          ) : (
+            <TransitionGroup component={null}>
+              {isMounted &&
+                items.map((item, i) => (
+                  <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
+                    <div style={{ transitionDelay: `${i + 1}00ms` }}>{item}</div>
+                  </CSSTransition>
+                ))}
+            </TransitionGroup>
+          )}
+        </StyledHeroContent>
+
+        <StyledHeroImageWrap>
+          <img src="/emo.webp" alt="Cute emo robot illustration" loading="eager" />
+        </StyledHeroImageWrap>
+      </StyledHeroLayout>
     </StyledHeroSection>
   );
 };

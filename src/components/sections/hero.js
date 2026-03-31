@@ -3,7 +3,6 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled, { keyframes } from 'styled-components';
 import { navDelay, loaderDelay } from '@utils';
 import { usePrefersReducedMotion } from '@hooks';
-import heroFallbackImage from '../../images/me.jpg';
 
 const float1 = keyframes`
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
@@ -146,6 +145,7 @@ const StyledHeroLayout = styled.div`
 const StyledHeroImageWrap = styled.div`
   position: relative;
   justify-self: end;
+  transform: translateX(-24px);
   width: min(420px, 100%);
   border-radius: 16px;
   overflow: hidden;
@@ -163,6 +163,7 @@ const StyledHeroImageWrap = styled.div`
 
   @media (max-width: 1080px) {
     justify-self: start;
+    transform: none;
     width: min(340px, 85vw);
   }
 `;
@@ -439,7 +440,8 @@ const Hero = () => {
             loading="eager"
             onError={e => {
               e.currentTarget.onerror = null;
-              e.currentTarget.src = heroFallbackImage;
+              e.currentTarget.src =
+                'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?auto=format&fit=crop&w=900&q=80';
             }}
           />
         </StyledHeroImageWrap>

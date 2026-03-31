@@ -3,6 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled, { keyframes } from 'styled-components';
 import { navDelay, loaderDelay } from '@utils';
 import { usePrefersReducedMotion } from '@hooks';
+import heroFallbackImage from '../../images/me.jpg';
 
 const float1 = keyframes`
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
@@ -432,7 +433,15 @@ const Hero = () => {
         </StyledHeroContent>
 
         <StyledHeroImageWrap>
-          <img src="/emo.webp" alt="Cute emo robot illustration" loading="eager" />
+          <img
+            src="/emo.webp"
+            alt="Cute emo robot illustration"
+            loading="eager"
+            onError={e => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = heroFallbackImage;
+            }}
+          />
         </StyledHeroImageWrap>
       </StyledHeroLayout>
     </StyledHeroSection>

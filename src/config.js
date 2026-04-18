@@ -15,12 +15,20 @@ module.exports = {
       name: 'LeetCode',
       url: 'https://leetcode.com/u/abdullah628360',
     },
+    {
+      name: 'YouTube',
+      url: 'https://www.youtube.com/@abdullah6287',
+    },
   ],
 
   navLinks: [
     {
       name: 'About',
       url: '/#about',
+    },
+    {
+      name: 'Tutorials',
+      url: '/#tutorials',
     },
     {
       name: 'Education',

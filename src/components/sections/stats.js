@@ -17,7 +17,6 @@ const StyledStatsSection = styled.section`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 20px;
-    margin-bottom: 60px;
 
     @media (max-width: 768px) {
       grid-template-columns: repeat(2, 1fr);
@@ -248,12 +247,17 @@ const StyledStatsSection = styled.section`
 
   .youtube-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
 
     @media (max-width: 600px) {
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 12px;
     }
   }
 
@@ -263,8 +267,8 @@ const StyledStatsSection = styled.section`
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--lightest-navy);
-    transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.35s cubic-bezier(0.645, 0.045, 0.355, 1);
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.2);
 
     &::before {
       content: '';
@@ -280,9 +284,9 @@ const StyledStatsSection = styled.section`
     }
 
     &:hover {
-      transform: translateY(-8px);
+      transform: translateY(-5px);
       border-color: var(--green);
-      box-shadow: 0 12px 40px rgba(100, 255, 218, 0.1), 0 4px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 26px rgba(100, 255, 218, 0.1), 0 3px 14px rgba(0, 0, 0, 0.28);
 
       &::before {
         opacity: 1;
@@ -315,11 +319,11 @@ const StyledStatsSection = styled.section`
   }
 
   .video-info {
-    padding: 20px;
+    padding: 14px;
     text-align: left;
 
     @media (max-width: 768px) {
-      padding: 16px;
+      padding: 13px;
     }
   }
 
@@ -343,10 +347,10 @@ const StyledStatsSection = styled.section`
 
   .video-title {
     color: var(--lightest-slate);
-    font-size: var(--fz-lg);
+    font-size: clamp(13px, 1.45vw, 16px);
     font-weight: 600;
     margin-bottom: 6px;
-    line-height: 1.3;
+    line-height: 1.35;
   }
 
   .video-series {
@@ -390,26 +394,17 @@ const Stats = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [hasAnimated, setHasAnimated] = useState(false);
   const [counters, setCounters] = useState([0, 0, 0, 0]);
-  const [githubCounters, setGithubCounters] = useState({ repos: 0, contributions: 0 });
-  const [githubData, setGithubData] = useState({
-    repos: 0,
-    contributions: 0,
-    loading: true,
-    error: false,
-  });
-
-  const GITHUB_USERNAME = 'Abdullah628';
 
   // Personal stats - easily adjustable
   const personalStats = [
-    { number: 44, suffix: '+', label: 'Projects Delivered' },
+    { number: 21, suffix: '+', label: 'Projects Delivered' },
     { number: 98, suffix: '%', label: 'Client Satisfaction' },
     { number: 15, suffix: '+', label: 'Technologies' },
     { number: 2, suffix: '+', label: 'Years Experience' },
   ];
 
   // Counter animation function
-  const animateCounter = (target, index, isGithub = false, key = null, duration = 2000) => {
+  const animateCounter = (target, index, duration = 2000) => {
     const startTime = performance.now();
     const startValue = 0;
 
@@ -421,15 +416,11 @@ const Stats = () => {
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
       const currentValue = Math.floor(startValue + (target - startValue) * easeOutQuart);
 
-      if (isGithub) {
-        setGithubCounters(prev => ({ ...prev, [key]: currentValue }));
-      } else {
-        setCounters(prev => {
-          const newCounters = [...prev];
-          newCounters[index] = currentValue;
-          return newCounters;
-        });
-      }
+      setCounters(prev => {
+        const newCounters = [...prev];
+        newCounters[index] = currentValue;
+        return newCounters;
+      });
 
       if (progress < 1) {
         requestAnimationFrame(updateCounter);
@@ -454,19 +445,9 @@ const Stats = () => {
             // Animate personal stats
             personalStats.forEach((stat, index) => {
               setTimeout(() => {
-                animateCounter(stat.number, index, false, null, 2000);
+                animateCounter(stat.number, index, 2000);
               }, index * 100);
             });
-
-            // Animate GitHub stats when data is loaded
-            if (!githubData.loading && !githubData.error) {
-              setTimeout(() => {
-                animateCounter(githubData.repos, 0, true, 'repos', 2000);
-              }, 400);
-              setTimeout(() => {
-                animateCounter(1200, 0, true, 'contributions', 2000);
-              }, 500);
-            }
           }
         });
       },
@@ -482,7 +463,7 @@ const Stats = () => {
         observer.unobserve(revealContainer.current);
       }
     };
-  }, [prefersReducedMotion, hasAnimated, githubData]);
+  }, [prefersReducedMotion, hasAnimated]);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -492,57 +473,22 @@ const Stats = () => {
     sr.reveal(revealContainer.current, srConfig());
   }, []);
 
-  useEffect(() => {
-    // Fetch GitHub data
-    const fetchGithubData = async () => {
-      try {
-        const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch');
-        }
-        const data = await response.json();
-
-        setGithubData({
-          repos: data.public_repos,
-          contributions: 1200,
-          loading: false,
-          error: false,
-        });
-
-        // Trigger GitHub counter animation if section already visible
-        if (hasAnimated) {
-          setTimeout(() => {
-            animateCounter(data.public_repos, 0, true, 'repos', 2000);
-          }, 100);
-          setTimeout(() => {
-            animateCounter(1200, 0, true, 'contributions', 2000);
-          }, 200);
-        }
-      } catch (error) {
-        console.error('Error fetching GitHub data:', error);
-        setGithubData(prev => ({ ...prev, loading: false, error: true }));
-      }
-    };
-
-    fetchGithubData();
-  }, []);
-
   return (
-    <StyledStatsSection id="stats" ref={revealContainer}>
+    <StyledStatsSection id="tutorials" ref={revealContainer}>
       {/* YouTube Playlist Section */}
       <div className="youtube-section">
         <div className="youtube-header">
           <svg className="youtube-icon" viewBox="0 0 24 24" fill="#FF0000">
             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
           </svg>
-          <h3 className="youtube-title">Master System Design</h3>
+          <h3 className="youtube-title">Tutorials: Master System Design</h3>
         </div>
 
         <div className="playlist-badge">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z" />
           </svg>
-          Playlist • 2 Videos
+          Playlist • 3 Videos
         </div>
 
         <div className="youtube-grid">
@@ -581,6 +527,22 @@ const Stats = () => {
               <div className="video-series">Master System Design Series</div>
             </div>
           </div>
+
+          <div className="video-card">
+            <div className="video-embed-wrapper">
+              <iframe
+                src="https://www.youtube.com/embed/3usU1v0fg14"
+                title="Master System Design - Episode 3"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <div className="video-info">
+              <div className="video-number">Episode 03</div>
+              <div className="video-title">Master System Design Tutorial - Episode 3</div>
+              <div className="video-series">Master System Design Series</div>
+            </div>
+          </div>
         </div>
 
         <div className="youtube-cta">
@@ -608,7 +570,7 @@ const Stats = () => {
         ))}
       </div>
 
-      <div className="github-section">
+      {/* <div className="github-section">
         <h3>GitHub Activity</h3>
 
         <div className="github-stats">
@@ -651,7 +613,7 @@ const Stats = () => {
             />
           )}
         </div>
-      </div>
+      </div> */}
     </StyledStatsSection>
   );
 };

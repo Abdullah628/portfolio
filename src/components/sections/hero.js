@@ -72,6 +72,22 @@ const StyledHeroSection = styled.section`
   .email-link {
     ${({ theme }) => theme.mixins.bigButton};
     margin-top: 50px;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+
+    @media (max-width: 480px) {
+      padding: 1rem 1.25rem;
+      font-size: var(--fz-xs);
+
+      &:hover,
+      &:focus,
+      &:focus-visible,
+      &:active {
+        transform: none;
+        box-shadow: none;
+      }
+    }
   }
 `;
 

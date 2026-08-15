@@ -415,14 +415,13 @@ const ThumbImage = ({ slug, alt }) => {
   }
 };
 
-const FullImage = ({ slug, alt, onLoad }) => {
+const FullImage = ({ slug, alt }) => {
   switch (slug) {
     case 'prize_ceremony02':
       return (
         <StaticImage
           src="../../images/gellary/prize_ceremony02.jpg"
           alt={alt}
-          onLoad={onLoad}
           width={1200}
           quality={90}
           layout="constrained"
@@ -435,7 +434,6 @@ const FullImage = ({ slug, alt, onLoad }) => {
         <StaticImage
           src="../../images/gellary/prize_ceremony01.jpg"
           alt={alt}
-          onLoad={onLoad}
           width={1200}
           quality={90}
           layout="constrained"
@@ -448,7 +446,6 @@ const FullImage = ({ slug, alt, onLoad }) => {
         <StaticImage
           src="../../images/gellary/graduation_day.jpg"
           alt={alt}
-          onLoad={onLoad}
           width={1200}
           quality={90}
           layout="constrained"
@@ -461,7 +458,6 @@ const FullImage = ({ slug, alt, onLoad }) => {
         <StaticImage
           src="../../images/gellary/office_work.jpg"
           alt={alt}
-          onLoad={onLoad}
           width={1200}
           quality={90}
           layout="constrained"
@@ -474,7 +470,6 @@ const FullImage = ({ slug, alt, onLoad }) => {
         <StaticImage
           src="../../images/gellary/meetup.jpg"
           alt={alt}
-          onLoad={onLoad}
           width={1200}
           quality={90}
           layout="constrained"
@@ -495,7 +490,6 @@ ThumbImage.propTypes = {
 FullImage.propTypes = {
   slug: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
-  onLoad: PropTypes.func,
 };
 
 const galleryItems = [
@@ -538,6 +532,7 @@ const Gallery = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [activeIndex, setActiveIndex] = useState(null);
   const [imgLoaded, setImgLoaded] = useState(false);
+  const imgWrap = useRef(null);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -564,6 +559,34 @@ const Gallery = () => {
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+    };
+  }, [activeIndex]);
+
+  // StaticImage does not forward onLoad to the underlying <img>, so watch the
+  // real element instead. Cached images are already complete on mount, which is
+  // why the spinner used to linger on reopen.
+  useEffect(() => {
+    if (activeIndex === null || !imgWrap.current) {
+      return;
+    }
+
+    const img = imgWrap.current.querySelector('img:not([aria-hidden="true"])');
+    if (!img) {
+      return;
+    }
+
+    if (img.complete && img.naturalWidth > 0) {
+      setImgLoaded(true);
+      return;
+    }
+
+    const done = () => setImgLoaded(true);
+    img.addEventListener('load', done);
+    img.addEventListener('error', done);
+
+    return () => {
+      img.removeEventListener('load', done);
+      img.removeEventListener('error', done);
     };
   }, [activeIndex]);
 
@@ -619,7 +642,7 @@ const Gallery = () => {
             &times;
           </button>
           <div className="lightbox-content">
-            <div className="lightbox-img-wrap">
+            <div className="lightbox-img-wrap" ref={imgWrap}>
               {!imgLoaded && (
                 <div className="lightbox-spinner" role="status" aria-live="polite">
                   <div className="spinner-ring" />
@@ -630,7 +653,6 @@ const Gallery = () => {
                 key={galleryItems[activeIndex].slug}
                 slug={galleryItems[activeIndex].slug}
                 alt={galleryItems[activeIndex].title}
-                onLoad={() => setImgLoaded(true)}
               />
             </div>
             <div className="lightbox-meta">

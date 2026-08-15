@@ -1,5 +1,5 @@
 ---
-date: '1'
+date: '2'
 title: 'SpeakAI - English Practice App'
 cover: './speakai.PNG'
 github: 'https://github.com/Abdullah628/speakai-frontend'

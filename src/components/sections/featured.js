@@ -84,6 +84,13 @@ const StyledProject = styled.li`
         margin-right: 0;
       }
     }
+    .project-details-btn {
+      margin: 0 0 0 10px;
+
+      @media (max-width: 768px) {
+        margin: 0 10px 0 10px;
+      }
+    }
     .project-image {
       grid-column: 1 / 8;
 
@@ -134,6 +141,14 @@ const StyledProject = styled.li`
   .project-title {
     color: var(--lightest-slate);
     font-size: clamp(24px, 5vw, 28px);
+    max-width: 100%;
+    overflow-wrap: break-word;
+
+    a {
+      display: block;
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
 
     @media (min-width: 768px) {
       margin: 0 0 20px;
@@ -195,7 +210,7 @@ const StyledProject = styled.li`
 
   .project-details-btn {
     ${({ theme }) => theme.mixins.smallButton};
-    margin: 0 10px 0 0;
+    margin: 0 10px 0 10px;
     background-color: transparent;
     cursor: pointer;
     font-family: var(--font-mono);

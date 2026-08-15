@@ -563,30 +563,62 @@ const Gallery = () => {
   }, [activeIndex]);
 
   // StaticImage does not forward onLoad to the underlying <img>, so watch the
-  // real element instead. Cached images are already complete on mount, which is
+  // real element instead. It renders two <img> tags — [data-placeholder-image]
+  // and [data-main-image] — and only the latter tracks the full-size download.
+  // The main image also mounts a tick after activeIndex changes, hence the
+  // observer: without it we would query too early, find nothing, and leave the
+  // spinner up forever. Cached images are already complete on mount, which is
   // why the spinner used to linger on reopen.
   useEffect(() => {
-    if (activeIndex === null || !imgWrap.current) {
+    if (activeIndex === null) {
       return;
     }
 
-    const img = imgWrap.current.querySelector('img:not([aria-hidden="true"])');
-    if (!img) {
-      return;
+    let cleanupImg = null;
+
+    const attach = img => {
+      if (img.complete && img.naturalWidth > 0) {
+        setImgLoaded(true);
+        return true;
+      }
+      const done = () => setImgLoaded(true);
+      img.addEventListener('load', done);
+      img.addEventListener('error', done);
+      cleanupImg = () => {
+        img.removeEventListener('load', done);
+        img.removeEventListener('error', done);
+      };
+      return true;
+    };
+
+    const find = () => {
+      const wrap = imgWrap.current;
+      if (!wrap) {
+        return false;
+      }
+      const img = wrap.querySelector('img[data-main-image]');
+      return img ? attach(img) : false;
+    };
+
+    if (find()) {
+      return () => cleanupImg && cleanupImg();
     }
 
-    if (img.complete && img.naturalWidth > 0) {
-      setImgLoaded(true);
-      return;
+    // Main image not in the DOM yet — watch for it.
+    const observer = new MutationObserver(() => {
+      if (find()) {
+        observer.disconnect();
+      }
+    });
+    if (imgWrap.current) {
+      observer.observe(imgWrap.current, { childList: true, subtree: true });
     }
-
-    const done = () => setImgLoaded(true);
-    img.addEventListener('load', done);
-    img.addEventListener('error', done);
 
     return () => {
-      img.removeEventListener('load', done);
-      img.removeEventListener('error', done);
+      observer.disconnect();
+      if (cleanupImg) {
+        cleanupImg();
+      }
     };
   }, [activeIndex]);
 

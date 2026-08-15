@@ -226,6 +226,7 @@ const StyledLightbox = styled.div`
   }
 
   .lightbox-img-wrap {
+    position: relative;
     width: 100%;
     max-height: 78vh;
     display: flex;
@@ -240,6 +241,48 @@ const StyledLightbox = styled.div`
     img {
       max-height: 78vh;
       object-fit: contain !important;
+    }
+  }
+
+  .lightbox-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    pointer-events: none;
+
+    .spinner-ring {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 3px solid rgba(100, 255, 218, 0.2);
+      border-top-color: var(--green);
+      animation: spin 0.8s linear infinite;
+    }
+
+    .spinner-label {
+      margin: 0;
+      color: var(--light-slate);
+      font-family: var(--font-mono);
+      font-size: var(--fz-xxs);
+      letter-spacing: 0.5px;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox-spinner .spinner-ring {
+      animation-duration: 2.4s;
     }
   }
 
@@ -354,10 +397,10 @@ const ThumbImage = ({ slug, alt }) => {
           style={{ width: '100%', height: '100%' }}
         />
       );
-    case 'home_office':
+    case 'meetup':
       return (
         <StaticImage
-          src="../../images/gellary/home_office.jpg"
+          src="../../images/gellary/meetup.jpg"
           alt={alt}
           width={350}
           quality={80}
@@ -372,68 +415,28 @@ const ThumbImage = ({ slug, alt }) => {
   }
 };
 
-const FullImage = ({ slug, alt }) => {
+const FullImage = ({ slug, alt, onLoad }) => {
+  const shared = {
+    alt,
+    onLoad,
+    width: 1200,
+    quality: 90,
+    layout: 'constrained',
+    placeholder: 'dominantColor',
+    formats: ['AUTO', 'WEBP', 'AVIF'],
+  };
+
   switch (slug) {
     case 'prize_ceremony02':
-      return (
-        <StaticImage
-          src="../../images/gellary/prize_ceremony02.jpg"
-          alt={alt}
-          width={1200}
-          quality={90}
-          layout="constrained"
-          placeholder="dominantColor"
-          formats={['AUTO', 'WEBP', 'AVIF']}
-        />
-      );
+      return <StaticImage src="../../images/gellary/prize_ceremony02.jpg" {...shared} />;
     case 'prize_ceremony01':
-      return (
-        <StaticImage
-          src="../../images/gellary/prize_ceremony01.jpg"
-          alt={alt}
-          width={1200}
-          quality={90}
-          layout="constrained"
-          placeholder="dominantColor"
-          formats={['AUTO', 'WEBP', 'AVIF']}
-        />
-      );
+      return <StaticImage src="../../images/gellary/prize_ceremony01.jpg" {...shared} />;
     case 'graduation_day':
-      return (
-        <StaticImage
-          src="../../images/gellary/graduation_day.jpg"
-          alt={alt}
-          width={1200}
-          quality={90}
-          layout="constrained"
-          placeholder="dominantColor"
-          formats={['AUTO', 'WEBP', 'AVIF']}
-        />
-      );
+      return <StaticImage src="../../images/gellary/graduation_day.jpg" {...shared} />;
     case 'office_work':
-      return (
-        <StaticImage
-          src="../../images/gellary/office_work.jpg"
-          alt={alt}
-          width={1200}
-          quality={90}
-          layout="constrained"
-          placeholder="dominantColor"
-          formats={['AUTO', 'WEBP', 'AVIF']}
-        />
-      );
-    case 'home_office':
-      return (
-        <StaticImage
-          src="../../images/gellary/home_office.jpg"
-          alt={alt}
-          width={1200}
-          quality={90}
-          layout="constrained"
-          placeholder="dominantColor"
-          formats={['AUTO', 'WEBP', 'AVIF']}
-        />
-      );
+      return <StaticImage src="../../images/gellary/office_work.jpg" {...shared} />;
+    case 'meetup':
+      return <StaticImage src="../../images/gellary/meetup.jpg" {...shared} />;
     default:
       return null;
   }
@@ -447,6 +450,7 @@ ThumbImage.propTypes = {
 FullImage.propTypes = {
   slug: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
+  onLoad: PropTypes.func,
 };
 
 const galleryItems = [
@@ -476,10 +480,10 @@ const galleryItems = [
     sub: 'Heads-down on real-world problems',
   },
   {
-    slug: 'home_office',
-    tag: 'Workspace',
-    title: 'My Home Office',
-    sub: 'Where late-night ideas turn into code',
+    slug: 'meetup',
+    tag: 'Client Work',
+    title: 'Client Meeting',
+    sub: 'Walking through features I built for their product',
   },
 ];
 
@@ -488,6 +492,7 @@ const Gallery = () => {
   const revealItems = useRef([]);
   const prefersReducedMotion = usePrefersReducedMotion();
   const [activeIndex, setActiveIndex] = useState(null);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -517,7 +522,10 @@ const Gallery = () => {
     };
   }, [activeIndex]);
 
-  const openLightbox = i => setActiveIndex(i);
+  const openLightbox = i => {
+    setImgLoaded(false);
+    setActiveIndex(i);
+  };
   const closeLightbox = () => setActiveIndex(null);
   const onBackdropClick = e => {
     if (e.target === e.currentTarget) {
@@ -567,9 +575,17 @@ const Gallery = () => {
           </button>
           <div className="lightbox-content">
             <div className="lightbox-img-wrap">
+              {!imgLoaded && (
+                <div className="lightbox-spinner" role="status" aria-live="polite">
+                  <div className="spinner-ring" />
+                  <p className="spinner-label">Loading image…</p>
+                </div>
+              )}
               <FullImage
+                key={galleryItems[activeIndex].slug}
                 slug={galleryItems[activeIndex].slug}
                 alt={galleryItems[activeIndex].title}
+                onLoad={() => setImgLoaded(true)}
               />
             </div>
             <div className="lightbox-meta">

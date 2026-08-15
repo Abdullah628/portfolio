@@ -397,10 +397,10 @@ const Stats = () => {
 
   // Personal stats - easily adjustable
   const personalStats = [
-    { number: 21, suffix: '+', label: 'Projects Delivered' },
+    { number: 12, suffix: '+', label: 'Projects Delivered' },
     { number: 98, suffix: '%', label: 'Client Satisfaction' },
     { number: 15, suffix: '+', label: 'Technologies' },
-    { number: 2, suffix: '+', label: 'Years Experience' },
+    { number: 3, suffix: '+', label: 'Years Experience' },
   ];
 
   // Counter animation function
@@ -532,14 +532,16 @@ const Stats = () => {
             <div className="video-embed-wrapper">
               <iframe
                 src="https://www.youtube.com/embed/3usU1v0fg14"
-                title="Master System Design - Episode 3"
+                title="The Network Tax: What Every API Call Really Costs"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
             </div>
             <div className="video-info">
               <div className="video-number">Episode 03</div>
-              <div className="video-title">Master System Design Tutorial - Episode 3</div>
+              <div className="video-title">
+                The Network Tax: What Every API Call Really Costs | DNS, TCP, TLS &amp; Congestion
+              </div>
               <div className="video-series">Master System Design Series</div>
             </div>
           </div>

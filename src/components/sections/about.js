@@ -125,7 +125,15 @@ const About = () => {
     sr.reveal(revealContainer.current, srConfig());
   }, []);
 
-  const skills = ['JavaScript (ES6+)', 'TypeScript', 'AI', 'HTML', 'CSS', 'Git', 'PostgreSQL'];
+  const skills = [
+    'JavaScript (ES6+)',
+    'TypeScript',
+    'React',
+    'Next.js',
+    'Docker',
+    'Git',
+    'PostgreSQL',
+  ];
 
   return (
     <StyledAboutSection id="about" ref={revealContainer}>
@@ -135,14 +143,12 @@ const About = () => {
         <StyledText>
           <div>
             <p>
-              I’m a passionate software developer specializing in the MERN stack, focused on
-              building scalable, high-impact applications. I’ve developed healthcare platforms,
-              employee management systems, and AI-powered voice agents that elevate user experience.
-              My toolkit includes React, Node.js, FastAPI, MongoDB, Redis, Docker, and AWS, backed
-              by strong problem-solving and algorithmic skills. I enjoy mentoring developers,
-              leading R\&D initiatives, and tailoring solutions to meet unique business needs. For
-              me, coding isn’t just about writing software — it’s about crafting products that are
-              fast, reliable, and truly make a difference.
+              I’m a full-stack software developer who builds scalable applications end to end — from
+              clean, responsive interfaces to reliable APIs and the infrastructure behind them. I’ve
+              shipped healthcare platforms, employee management systems, and AI-powered voice
+              agents, working across the JavaScript and Python ecosystems. For me, coding isn’t just
+              about writing software — it’s about crafting products that are fast, reliable, and
+              truly make a difference.
             </p>
 
             {/* <p>

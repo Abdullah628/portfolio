@@ -416,27 +416,72 @@ const ThumbImage = ({ slug, alt }) => {
 };
 
 const FullImage = ({ slug, alt, onLoad }) => {
-  const shared = {
-    alt,
-    onLoad,
-    width: 1200,
-    quality: 90,
-    layout: 'constrained',
-    placeholder: 'dominantColor',
-    formats: ['AUTO', 'WEBP', 'AVIF'],
-  };
-
   switch (slug) {
     case 'prize_ceremony02':
-      return <StaticImage src="../../images/gellary/prize_ceremony02.jpg" {...shared} />;
+      return (
+        <StaticImage
+          src="../../images/gellary/prize_ceremony02.jpg"
+          alt={alt}
+          onLoad={onLoad}
+          width={1200}
+          quality={90}
+          layout="constrained"
+          placeholder="dominantColor"
+          formats={['AUTO', 'WEBP', 'AVIF']}
+        />
+      );
     case 'prize_ceremony01':
-      return <StaticImage src="../../images/gellary/prize_ceremony01.jpg" {...shared} />;
+      return (
+        <StaticImage
+          src="../../images/gellary/prize_ceremony01.jpg"
+          alt={alt}
+          onLoad={onLoad}
+          width={1200}
+          quality={90}
+          layout="constrained"
+          placeholder="dominantColor"
+          formats={['AUTO', 'WEBP', 'AVIF']}
+        />
+      );
     case 'graduation_day':
-      return <StaticImage src="../../images/gellary/graduation_day.jpg" {...shared} />;
+      return (
+        <StaticImage
+          src="../../images/gellary/graduation_day.jpg"
+          alt={alt}
+          onLoad={onLoad}
+          width={1200}
+          quality={90}
+          layout="constrained"
+          placeholder="dominantColor"
+          formats={['AUTO', 'WEBP', 'AVIF']}
+        />
+      );
     case 'office_work':
-      return <StaticImage src="../../images/gellary/office_work.jpg" {...shared} />;
+      return (
+        <StaticImage
+          src="../../images/gellary/office_work.jpg"
+          alt={alt}
+          onLoad={onLoad}
+          width={1200}
+          quality={90}
+          layout="constrained"
+          placeholder="dominantColor"
+          formats={['AUTO', 'WEBP', 'AVIF']}
+        />
+      );
     case 'meetup':
-      return <StaticImage src="../../images/gellary/meetup.jpg" {...shared} />;
+      return (
+        <StaticImage
+          src="../../images/gellary/meetup.jpg"
+          alt={alt}
+          onLoad={onLoad}
+          width={1200}
+          quality={90}
+          layout="constrained"
+          placeholder="dominantColor"
+          formats={['AUTO', 'WEBP', 'AVIF']}
+        />
+      );
     default:
       return null;
   }
